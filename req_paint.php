@@ -11,10 +11,10 @@ try
 {
     $dbh = new PDO('mysql:host=localhost;dbname=pictionnary', 'test', 'test');
 
-    $sql = $dbh->prepare("INSERT INTO drawings(drawingCommands, picture, userId) VALUES (:drawingCommands, :picture, :userId);");
-	$sql->bindValue(':drawingCommands', $drawingCommands);
-	$sql->bindValue(':picture', $picture);
-	$sql->bindValue(':userId', $userId);
+    $sql = $dbh->prepare("INSERT INTO drawings(commandes, image, u_id) VALUES (:commandes, :image, :uid);");
+	$sql->bindValue(':commandes', $drawingCommands);
+	$sql->bindValue(':image', $picture);
+	$sql->bindValue(':uid', $userId);
 	if (!$sql->execute()) 
 	{
 		echo "PDO::errorInfo():<br/>";

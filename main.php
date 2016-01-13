@@ -25,8 +25,8 @@
 	{
 		$dbh = new PDO('mysql:host=localhost;dbname=pictionnary', 'test', 'test');
 
-		$sql = $dbh->prepare("SELECT id FROM drawings WHERE userId= :userId");
-		$sql->bindValue(":userId", $_SESSION['sid']);
+		$sql = $dbh->prepare("SELECT id FROM drawings WHERE u_id= :uid");
+		$sql->bindValue(":uid", $_SESSION['sid']);
 		$sql->execute();
 		$i = 0;
 		foreach ($sql->fetchAll(PDO::FETCH_ASSOC) as $ligne) 

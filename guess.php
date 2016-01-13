@@ -9,8 +9,8 @@ else
  // ici, récupérer la liste des commandes dans la table DRAWINGS avec l'identifiant $_GET['id']  
  // l'enregistrer dans la variable $commands  
 	$dbh = new PDO('mysql:host=localhost;dbname=pictionnary', 'test', 'test');
-	$sql = $dbh->prepare("SELECT drawingCommands FROM drawings WHERE userId= :userId AND id= :id");
-	$sql->bindValue(":userId", $_SESSION['sid']);
+	$sql = $dbh->prepare("SELECT commandes FROM drawings WHERE u_id= :uid AND id= :id");
+	$sql->bindValue(":uid", $_SESSION['sid']);
 	$sql->bindValue(":id", $_GET['id']);
 	$sql->execute();
 	if($sql->rowCount() < 1) 
