@@ -11,7 +11,7 @@ try
 {
     $dbh = new PDO('mysql:host=localhost;dbname=pictionnary', 'test', 'test');
 
-    $sql = $dbh->prepare("INSERT INTO drawings(commandes, image, u_id) VALUES (:commandes, :image, :uid);");
+    $sql = $dbh->prepare("INSERT INTO drawings(commandes, images, u_id) VALUES (:commandes, :image, :uid);");
 	$sql->bindValue(':commandes', $drawingCommands);
 	$sql->bindValue(':image', $picture);
 	$sql->bindValue(':uid', $userId);

@@ -88,6 +88,7 @@ if(!isset($_SESSION['prenom'])) {
 			{  
                 if(isDrawing) 
 				{  
+					console.log("draw");
                     // ici, créer un nouvel objet qui représente une commande de type "draw", avec la position, et l'ajouter à la liste des commandes.
 					var command = {};
 					command.command="draw";
