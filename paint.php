@@ -56,8 +56,8 @@ if(!isset($_SESSION['prenom'])) {
                 // créer un nouvel objet qui représente une commande de type "start", avec la position, la couleur  
                 var command = {};  
                 command.command="start";
-				command.x=e.x - this.offsetLeft;
-				command.y=e.y - this.offsetTop;
+				command.x=e.layerX;
+				command.y=e.layerY;
 				command.size = size/2;
 				command.color = color;
                 //c'est équivalent à:   
@@ -71,7 +71,7 @@ if(!isset($_SESSION['prenom'])) {
                 // ici, dessinez un cercle de la bonne couleur, de la bonne taille, et au bon endroit. 
 				context.beginPath();
 				context.fillStyle = color;
-				context.arc(e.x - this.offsetLeft, e.y - this.offsetTop, size / 2, 0, 2 * Math.PI);
+				context.arc(e.layerX, e.layerY, size / 2, 0, 2 * Math.PI);
 				context.fill();
 				context.closePath();
   
@@ -88,17 +88,16 @@ if(!isset($_SESSION['prenom'])) {
 			{  
                 if(isDrawing) 
 				{  
-					console.log("draw");
                     // ici, créer un nouvel objet qui représente une commande de type "draw", avec la position, et l'ajouter à la liste des commandes.
 					var command = {};
 					command.command="draw";
-					command.x=e.x - this.offsetLeft;
-					command.y=e.y - this.offsetTop;
+					command.x=e.layerX;
+					command.y=e.layerY;
 					drawingCommands.push(command);
                     // ici, dessinez un cercle de la bonne couleur, de la bonne taille, et au bon endroit.   
 					context.beginPath();
 					context.fillStyle = color;
-					context.arc(e.x - this.offsetLeft, e.y - this.offsetTop, size / 2, 0, 2 * Math.PI);
+					context.arc(e.layerX, e.layerY, size / 2, 0, 2 * Math.PI);
 					context.fill();
 					context.closePath();
 					
@@ -115,7 +114,7 @@ if(!isset($_SESSION['prenom'])) {
                 console.log("clear");  
                 // ici ajouter à la liste des commandes une nouvelle commande de type "clear"
 				var command = {};
-				command.command="restart";
+				command.command="clear";
 				drawingCommands.push(command);
                 // ici, effacer le context, grace à la méthode clearRect.
 				context.clearRect(0, 0, canvas.width, canvas.height);
