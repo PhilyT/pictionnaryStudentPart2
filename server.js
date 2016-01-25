@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({ secret: 'cestunsecret' })); // session secret
 app.use(morgan('combined')); // Active le middleware de logging
 app.use(passport.initialize());
 app.use(flash());
@@ -29,7 +29,7 @@ logger.info('server start');
 // route
 app.get('/', function(req, res)
 {
-    res.redirect('/login');
+    res.render('main');
 });
 
 app.get('/login', function(req, res)

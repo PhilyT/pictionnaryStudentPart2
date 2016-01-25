@@ -7,6 +7,7 @@ var mysql = require('mysql');
 
 var connection = mysql.createConnection({
 				  host     : 'localhost',
+				  port     : '3307',
 				  user     : 'test',
 				  password : 'test',
 				  database: 'pictionnary'
@@ -61,17 +62,33 @@ module.exports = function(passport) {
 
 				// if there is no user with that email
                 // create the user
-                var newUserMysql = new Object();
-				
+                var newUserMysql = new Object();			
 				newUserMysql.email    = email;
                 newUserMysql.password = password; // use the generateHash function in our user model
+				newUserMysql.nom = req.body.nom;
+				newUserMysql.prenom = req.body.prenom;
+				newUserMysql.telephone = req.body.telephone;
+				newUserMysql.siteweb = req.body.siteweb;
+				newUserMysql.sexe = req.body.sexe;
+				newUserMysql.birthdate = req.body.birthdate;
+				newUserMysql.ville = req.body.ville;
+				newUserMysql.taille = req.body.taille;
+				newUserMysql.couleur = req.body.couleur.substring(1,req.body.couleur.length);
+				newUserMysql.profilepicfile = req.body.profilepicfile;
 			
-				var insertQuery = "INSERT INTO users ( email, password ) values ('" + email +"','"+ password +"')";
+				var insertQuery = {email: email, password: password, nom: req.body.nom, prenom: req.body.prenom, tel: req.body.tel, website: req.body.siteweb, sexe: req.body.sexe, birthdate: req.body.birthdate, ville: req.body.ville, taille: req.body.taille, couleur: req.body.couleur.substring(1,req.body.couleur.length), profilepic: req.body.profilepicfile};
 					console.log(insertQuery);
-				connection.query(insertQuery,function(err,rows){
-				newUserMysql.id = rows.insertId;
-				
-				return done(null, newUserMysql);
+				connection.query('INSERT INTO users SET ?', insertQuery,function(err,rows)
+				{
+					if(err)
+					{
+						return done(err);
+					}
+					else
+					{
+						newUserMysql.id = rows.insertId;
+						return done(null, newUserMysql);
+					}				
 				});	
             }	
 		});
