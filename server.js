@@ -37,6 +37,16 @@ app.get('/login', function(req, res)
 	res.render('login');
 });
 
+app.get('/paint', function(req, res)
+{
+    res.render('paint');
+});
+
+app.get('/guess', function(req, res)
+{
+    res.render('guess');
+})
+
 app.post('/login', passport.authenticate('local-login', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
