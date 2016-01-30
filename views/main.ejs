@@ -1,31 +1,7 @@
-<div>
-	<a href="/paint">Dessiner</a>
-</div>
-<div>
-<script type="text/javascript">
-	if(isset($_SESSION['email']))
-	{
-	try 
-	{
-		$dbh = new PDO('mysql:host=localhost;dbname=pictionnary', 'test', 'test');
-
-		$sql = $dbh->prepare("SELECT id FROM drawings WHERE u_id= :uid");
-		$sql->bindValue(":uid", $_SESSION['sid']);
-		$sql->execute();
-		$i = 0;
-		foreach ($sql->fetchAll(PDO::FETCH_ASSOC) as $ligne) 
-		{
-			echo "<a href=guess.php?id=" . $ligne['id'] . ">Pictionnary " . ++$i . "</a><br/>";
-		}
-	} 
-	catch (PDOException $e) 
-	{
-		print "Erreur !: " . $e->getMessage() . "<br/>";
-		$dbh = null;
-		die();
-	}
-	}
-?>
-</script>
+<% var title = 'Acceuil' %>
+<% include head %>
+	<div>
+		<a href="/paint">Dessiner</a>
+	</div>
 </body>
 <html>

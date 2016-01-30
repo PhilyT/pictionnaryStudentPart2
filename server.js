@@ -42,20 +42,26 @@ app.get('/paint', function(req, res)
     res.render('paint');
 });
 
+app.post('/paint', function(req, res)
+{
+    console.log("not yet implemented");
+});
+
 app.get('/guess', function(req, res)
 {
     res.render('guess');
 })
 
-app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));	
-
-app.get('/profile', function(req, res)
+app.post('/login', passport.authenticate('local-login', 
 {
-	res.render('profile');
+    successRedirect : '/profile', // redirect to the secure profile section
+    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+}));	
+
+app.get('/profile', isLoggedIn, function(req, res)
+{
+	res.render('profile', { user : req.user });
 });
 
 app.get('/signup', function(req, res)
@@ -63,11 +69,30 @@ app.get('/signup', function(req, res)
 	res.render('signup');
 });
 
-app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
+app.post('/signup', passport.authenticate('local-signup',
+{
+    successRedirect : '/profile', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+}));
+
+app.get('/logout', function(req, res) 
+{
+        req.logout();
+        res.redirect('/');
+});
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) 
+{
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
   
 app.listen(1313);
 
