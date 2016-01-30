@@ -84,10 +84,10 @@ module.exports = function(passport)
 				newUserMysql.ville = req.body.ville;
 				newUserMysql.taille = req.body.taille;
 				newUserMysql.couleur = req.body.couleur.substring(1,req.body.couleur.length);
-				newUserMysql.profilepicfile = req.body.profilepicfile;
+				newUserMysql.profilepic = req.body.profilepic;
 			
-				var insertQuery = {email: email, password: password, nom: req.body.nom, prenom: req.body.prenom, tel: req.body.tel, website: req.body.siteweb, sexe: req.body.sexe, birthdate: req.body.birthdate, ville: req.body.ville, taille: req.body.taille, couleur: req.body.couleur.substring(1,req.body.couleur.length), profilepic: req.body.profilepicfile};
-					console.log(insertQuery);
+				var insertQuery = {email: email, password: password, nom: req.body.nom, prenom: req.body.prenom, tel: req.body.telephone, website: req.body.siteweb, sexe: req.body.sexe, birthdate: req.body.birthdate, ville: req.body.ville, taille: req.body.taille, couleur: req.body.couleur.substring(1,req.body.couleur.length), profilepic: req.body.profilepicfile};
+				console.log(insertQuery);
 				connection.query('INSERT INTO users SET ?', insertQuery,function(err,rows)
 				{
 					if(err)
