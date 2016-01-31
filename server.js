@@ -7,6 +7,7 @@ var mysql = require('mysql');
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var url = require('url');
 
 var app = express(); 
 
@@ -39,18 +40,29 @@ logger.info('server start');
 app.get('/', function(req, res)
 {
     if (req.isAuthenticated && req.user != null) 
-    {
-        res.render('main', { message1 : 'Bonjour ' + req.user.prenom, href1 : 'logout', message2 : ' Deconnexion', message3 : req.user.profilepic, href2 : '', message4 : '' });
+    {   
+        connection.query('SELECT id FROM drawings WHERE u_id=' + req.user.id +';', function(err, rows)
+        {
+            if (err)
+            { 
+                res.writeHead(200);
+                res.end('error');
+            } 
+            else
+            {
+                res.render('main', { user : req.user, draw : rows });
+            }
+        });
     } 
     else
     {
-        res.render('main', { message1 : '', href1 : 'login', message2 : 'Connexion', message3 : '', href2 : 'signup', message4 : 'Inscription' });
+        res.render('main', { user : '' });
     }
 });
 
 app.get('/login', function(req, res)
 {
-	res.render('login', { message1 : '', href1 : 'login', message2 : 'Connexion', message3 : '', href2 : 'signup', message4 : 'Inscription' });
+	res.render('login', { user : '' });
 });
 
 app.get('/paint', isLoggedIn,function(req, res)
@@ -83,7 +95,23 @@ app.post('/paint',function(req, res)
 
 app.get('/guess', isLoggedIn,function(req, res)
 {
-    res.render('guess');
+    var query  = url.parse(req.url,true).query;
+    console.log(query['drawid']);
+    console.log(query);
+    connection.query('SELECT commandes FROM drawings WHERE u_id=' + req.user.id + ' AND id='+ query['drawid']+ ';', function(err, rows)
+        {
+            if (err)
+            { 
+                res.writeHead(200);
+                res.end('error');
+            } 
+            else
+            {
+                console.log(rows[0].commandes);
+                console.log(rows[0]);
+                res.render('guess', { commandes : rows[0].commandes });
+            }
+        });
 })
 
 app.post('/login', passport.authenticate('local-login', 
@@ -95,12 +123,12 @@ app.post('/login', passport.authenticate('local-login',
 
 app.get('/profile', isLoggedIn, function(req, res)
 {
-	res.render('profile', { user : req.user, message1 : 'Bonjour ' + req.user.prenom, href1 : 'logout', message2 : ' Deconnexion', message3 : req.user.profilepic, href2 : '', message4 : '' });
+	res.render('profile', { user : req.user });
 });
 
 app.get('/signup', function(req, res)
 {
-	res.render('signup', { message1 : '', href1 : 'login', message2 : 'Connexion', message3 : '', href2 : 'signup', message4 : 'Inscription' });
+	res.render('signup', { user : '' });
 });
 
 app.post('/signup', passport.authenticate('local-signup',

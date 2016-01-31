@@ -10,7 +10,7 @@
         // la dernière position du stylo  
         var x0, y0;  
         // le tableau de commandes de dessin à envoyer au serveur lors de la validation du dessin  
-        var drawingCommands = <?php echo $commands;?>;  
+        var drawingCommands = <%- commandes %>;  
   
         window.onload = function() 
 		{  
@@ -86,6 +86,7 @@
     </script>  
 </head>  
 <body>  
-    <canvas id="myCanvas"></canvas>  
+    <canvas id="myCanvas"></canvas>
+    <a href="/">Retour</a>
 </body>  
 </html>

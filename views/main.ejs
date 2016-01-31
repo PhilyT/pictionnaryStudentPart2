@@ -1,7 +1,11 @@
 <% var title = 'Acceuil' %>
 <% include head %>
-	<div>
-		<a href="/paint">Dessiner</a>
-	</div>
+	<% if(user != '') { %>
+		<div>
+			<a href="/paint">Dessiner</a>
+		</div>
+		<% for(var i=0; i<draw.length; i++) { %>
+			<li><a href="/guess?drawid=<%= draw[i].id %>">Dessin <%= i %></a></li>
+	<% }} %>
 </body>
 <html>

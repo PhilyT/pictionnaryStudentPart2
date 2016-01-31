@@ -10,6 +10,9 @@
 </head>
 <body>
 <header>
-	<%= message1 %><a href=<%= href1 %>><%= message2 %></a><%= message3 %>
-	<a href=<%= href2 %>><%= message4 %></a>
+	<% if (user != '') { %>
+        Bonjour <%= user.prenom %>, <a href="/logout">Deconnexion</a><%= user.profilepic %>
+    <% } else{ %>
+    	<a href="/login">Connexion</a> <a href="/signup">Inscription</a>
+    <% } %>
 </header>
