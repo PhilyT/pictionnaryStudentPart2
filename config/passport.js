@@ -47,29 +47,20 @@ module.exports = function(passport)
 	{
         clientID: '463573240515273',
         clientSecret: '0ce42a1f02ddeb96d1e1ef274affff2d',
-        callbackURL: "https://cxrymdgfhw.localtunnel.me/auth/facebook/callback"
-    	
+        callbackURL: "http://localhost:1313/auth/facebook/callback",
+    	profileFields   : ['id, last_name, first_name, gender, email, birthday, location, website, picture']
   	}, function(token, refreshToken, profile, done) 
     {
-        User.findOne({ 'facebook.id' : profile.id }, function (err, user) 
+        console.log(profile);
+        process.nextTick(function()
         {
-            if (err) 
-            {
-                return done(err);
-            } 
-            if (user)
-            {
-                return done(null, user);
-            }
-            else
-            {
-                var newUser = new Object();
-                newUser.id = profile.id;
-                newUser.profilepic = token;
-                newUser.prenom = profile.name.givenName;
-                newUser.email = profile.email[0].value;
-                return done(null, newUser);
-            }
+            /*var newUser = new Object();
+            newUser.id = profile._json.id;
+            newUser.profilepic = profile._json.picture;
+            newUser.prenom = profile._json.first_name;
+            newUser.email = profile._json.email;
+            newUser.birthdate = profile._json.birthdate;*/
+            return done(null, profile);
         });
     }));
 

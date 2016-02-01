@@ -143,15 +143,11 @@ app.get('/logout', function(req, res)
         res.redirect('/');
 });
 
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email', 'public_profile', 'user_friends']}));
 
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { successRedirect: '/',
                                       failureRedirect: '/login' }));
-
-app.get('/auth/facebook',
-  passport.authenticate('facebook', { scope: ['read_stream', 'publish_actions'] })
-);
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) 
