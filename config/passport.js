@@ -2,8 +2,11 @@
 				
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 
 var mysql = require('mysql');
+
+var User = require('../app/models/user');
 
 var connection = mysql.createConnection(
 {
@@ -38,7 +41,37 @@ module.exports = function(passport)
 			done(err, rows[0]);
 		});
     });
-	
+
+    //Facebook	
+	passport.use(new FacebookStrategy(
+	{
+        clientID: '463573240515273',
+        clientSecret: '0ce42a1f02ddeb96d1e1ef274affff2d',
+        callbackURL: "https://cxrymdgfhw.localtunnel.me/auth/facebook/callback"
+    	
+  	}, function(token, refreshToken, profile, done) 
+    {
+        User.findOne({ 'facebook.id' : profile.id }, function (err, user) 
+        {
+            if (err) 
+            {
+                return done(err);
+            } 
+            if (user)
+            {
+                return done(null, user);
+            }
+            else
+            {
+                var newUser = new Object();
+                newUser.id = profile.id;
+                newUser.profilepic = token;
+                newUser.prenom = profile.name.givenName;
+                newUser.email = profile.email[0].value;
+                return done(null, newUser);
+            }
+        });
+    }));
 
  	// =========================================================================
     // LOCAL SIGNUP ============================================================

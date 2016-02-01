@@ -13,6 +13,6 @@
 	<% if (user != '') { %>
         Bonjour <%= user.prenom %>, <a href="/logout">Deconnexion</a><%= user.profilepic %>
     <% } else{ %>
-    	<a href="/login">Connexion</a> <a href="/signup">Inscription</a>
+    	<a href="/auth/facebook">Connexion Facebook</a> <a href="/login">Connexion</a> <a href="/signup">Inscription</a>
     <% } %>
 </header>

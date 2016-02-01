@@ -21,7 +21,6 @@ app.use(morgan('combined')); // Active le middleware de logging
 app.use(passport.initialize());
 app.use(flash());
 app.use(passport.session());
-//app.use(express.static(__dirname + '/public')); // Indique que le dossier /public contient des fichiers statiques (middleware chargé de base)
 
 require('./config/passport')(passport);
 
@@ -143,6 +142,16 @@ app.get('/logout', function(req, res)
         req.logout();
         res.redirect('/');
 });
+
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { successRedirect: '/',
+                                      failureRedirect: '/login' }));
+
+app.get('/auth/facebook',
+  passport.authenticate('facebook', { scope: ['read_stream', 'publish_actions'] })
+);
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) 
