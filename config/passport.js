@@ -6,7 +6,6 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 var mysql = require('mysql');
 
-var User = require('../app/models/user');
 
 var connection = mysql.createConnection(
 {
@@ -54,13 +53,24 @@ module.exports = function(passport)
         console.log(profile);
         process.nextTick(function()
         {
-            /*var newUser = new Object();
-            newUser.id = profile._json.id;
+            var newUser = new Object();
             newUser.profilepic = profile._json.picture;
             newUser.prenom = profile._json.first_name;
             newUser.email = profile._json.email;
-            newUser.birthdate = profile._json.birthdate;*/
-            return done(null, profile);
+            newUser.birthdate = '00-00-00';
+            insertQuery = { prenom : newUser.prenom, profilepic : newUser.profilepic, email : newUser.email, birthdate : newUser.birthdate};
+            connection.query('INSERT INTO users SET ?', insertQuery,function(err,rows)
+                {
+                    if(err)
+                    {
+                        return done(err);
+                    }
+                    else
+                    {
+                        newUser.id = rows.insertId;
+                        return done(null, newUser);
+                    }               
+                });
         });
     }));
 
